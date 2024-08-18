@@ -3,11 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_app/features/movie/domain/entities/movie.dart';
 import 'package:movie_app/features/movie/presentation/providers/movie_provider.dart';
 
-/// Pantalla que muestra los detalles de una película seleccionada.
 class MovieDetailPage extends ConsumerWidget {
   final int movieId;
 
-  MovieDetailPage({required this.movieId});
+  const MovieDetailPage({super.key, required this.movieId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -53,6 +52,25 @@ class MovieDetailPage extends ConsumerWidget {
                   const SizedBox(height: 8.0),
                   Text(
                       'Plot: ${movie.plot}'), // Muestra la trama de la película
+                  const SizedBox(height: 16.0),
+                  const Text(
+                    'Actors:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8.0),
+                  // Mostrar la lista de nombres de actores
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: movie.actors.length,
+                      itemBuilder: (context, index) {
+                        final actorName = movie.actors[index]
+                            as String; // Asegurarse de que es una cadena
+                        return const Text(
+                            "Actor"); // Pasar la cadena a ActorCard
+                      },
+                    ),
+                  ),
                 ],
               ),
             );
@@ -61,6 +79,11 @@ class MovieDetailPage extends ConsumerWidget {
               child: Text(
                   'Movie not found')); // Muestra un mensaje si no se encuentra la película
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () =>
+            Navigator.of(context).pop(), // Regresa a la lista de películas
+        child: const Icon(Icons.arrow_back),
       ),
     );
   }

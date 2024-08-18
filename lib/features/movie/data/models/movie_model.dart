@@ -1,45 +1,25 @@
 import 'package:movie_app/features/movie/domain/entities/movie.dart';
 
-/// MovieModel es la implementación concreta de la entidad Movie.
-/// Representa un modelo que mapea los datos JSON obtenidos desde la API.
 class MovieModel extends Movie {
   MovieModel({
-    required int id,
-    required String title,
-    required int year,
-    required List<String> genre,
-    required double rating,
-    required String director,
-    required List<String> actors,
-    required String plot,
-    required String poster,
-    required String trailer,
-    required int runtime,
-    required String awards,
-    required String country,
-    required String language,
-    required String boxOffice,
-    required String production,
-    required String website,
-  }) : super(
-          id: id,
-          title: title,
-          year: year,
-          genre: genre,
-          rating: rating,
-          director: director,
-          actors: actors,
-          plot: plot,
-          poster: poster,
-          trailer: trailer,
-          runtime: runtime,
-          awards: awards,
-          country: country,
-          language: language,
-          boxOffice: boxOffice,
-          production: production,
-          website: website,
-        );
+    required super.id,
+    required super.title,
+    required super.year,
+    required super.genre,
+    required super.rating,
+    required super.director,
+    required super.actors, // Cambiado para ser una lista de ActorModel
+    required super.plot,
+    required super.poster,
+    required super.trailer,
+    required super.runtime,
+    required super.awards,
+    required super.country,
+    required super.language,
+    required super.boxOffice,
+    required super.production,
+    required super.website,
+  });
 
   /// Convierte un mapa JSON en una instancia de MovieModel.
   factory MovieModel.fromJson(Map<String, dynamic> json) {
@@ -51,7 +31,6 @@ class MovieModel extends Movie {
       rating: json['rating'].toDouble(),
       director: json['director'],
       actors: List<String>.from(json['actors']),
-      plot: json['plot'],
       poster: json['poster'],
       trailer: json['trailer'],
       runtime: json['runtime'],
@@ -61,6 +40,7 @@ class MovieModel extends Movie {
       boxOffice: json['boxOffice'],
       production: json['production'],
       website: json['website'],
+      plot: json['plot'],
     );
   }
 

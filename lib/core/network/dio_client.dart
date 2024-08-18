@@ -22,7 +22,7 @@ class DioClient {
     try {
       final response = await _dio.get(url, queryParameters: queryParameters);
       return response; // Devuelve la respuesta HTTP obtenida
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // Manejo de errores de solicitud HTTP con DioError
       throw Exception('Error fetching data: ${e.message}');
     }

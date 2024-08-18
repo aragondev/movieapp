@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie_app/features/movie/domain/entities/movie.dart';
-import 'package:movie_app/routes/app_router.dart';
 
 /// Widget para mostrar la información básica de una película en forma de tarjeta.
 class MovieCard extends StatelessWidget {
   final Movie movie;
 
-  MovieCard({required this.movie});
+  const MovieCard({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
