@@ -13,8 +13,7 @@ final appRouter = GoRouter(
       path:
           '/movie/:id', // Ruta para la pantalla de detalles de una película específica
       builder: (context, state) {
-        final id = state.pathParameters[
-            'id']!; // Usa state.pathParameters en lugar de state.params
+        final id = state.pathParameters['id']!;
         return MovieDetailPage(
             movieId: int.parse(
                 id)); // Pasa el ID de la película a la pantalla de detalles

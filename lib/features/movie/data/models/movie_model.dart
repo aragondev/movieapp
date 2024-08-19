@@ -1,5 +1,7 @@
 import 'package:movie_app/features/movie/domain/entities/movie.dart';
 
+/// MovieModel es la implementación concreta de la entidad Movie.
+/// Representa un modelo que mapea los datos JSON obtenidos desde la API.
 class MovieModel extends Movie {
   MovieModel({
     required super.id,
@@ -8,17 +10,17 @@ class MovieModel extends Movie {
     required super.genre,
     required super.rating,
     required super.director,
-    required super.actors, // Cambiado para ser una lista de ActorModel
+    required super.actors,
     required super.plot,
     required super.poster,
-    required super.trailer,
-    required super.runtime,
-    required super.awards,
-    required super.country,
-    required super.language,
-    required super.boxOffice,
-    required super.production,
-    required super.website,
+    required String trailer,
+    required int runtime,
+    required String awards,
+    required String country,
+    required String language,
+    required String boxOffice,
+    required String production,
+    required String website,
   });
 
   /// Convierte un mapa JSON en una instancia de MovieModel.
@@ -31,6 +33,7 @@ class MovieModel extends Movie {
       rating: json['rating'].toDouble(),
       director: json['director'],
       actors: List<String>.from(json['actors']),
+      plot: json['plot'],
       poster: json['poster'],
       trailer: json['trailer'],
       runtime: json['runtime'],
@@ -40,7 +43,6 @@ class MovieModel extends Movie {
       boxOffice: json['boxOffice'],
       production: json['production'],
       website: json['website'],
-      plot: json['plot'],
     );
   }
 
@@ -55,15 +57,7 @@ class MovieModel extends Movie {
       'director': director,
       'actors': actors,
       'plot': plot,
-      'poster': poster,
-      'trailer': trailer,
-      'runtime': runtime,
-      'awards': awards,
-      'country': country,
-      'language': language,
-      'boxOffice': boxOffice,
-      'production': production,
-      'website': website,
+      'poster': poster
     };
   }
 }

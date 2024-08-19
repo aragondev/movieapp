@@ -3,82 +3,108 @@ import 'package:movie_app/core/constants/error_messages.dart';
 import 'package:movie_app/core/network/dio_client.dart';
 import 'package:movie_app/features/movie/data/models/movie_model.dart';
 
-/// Interfaz que define los métodos para interactuar con la fuente de datos remota de películas.
 abstract class MovieRemoteDataSource {
-  Future<List<MovieModel>> getAllMovies(); // Obtiene todas las películas
-  Future<MovieModel> getMovieById(int id); // Obtiene una película por ID
-  Future<List<MovieModel>> searchMovies(
-      String query); // Busca películas por título
+  Future<List<MovieModel>> getAllMovies();
+  Future<MovieModel> getMovieById(int id);
+  Future<List<MovieModel>> getMoviesWithLimit(int limit);
+  Future<List<MovieModel>> searchMovies(String query);
+  Future<List<MovieModel>> sortMoviesByName({String order = 'asc'});
 }
 
-/// Implementación concreta de MovieRemoteDataSource utilizando Dio para hacer solicitudes HTTP.
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   final DioClient dioClient;
 
-  /// Constructor que requiere una instancia de DioClient.
   MovieRemoteDataSourceImpl({required this.dioClient});
 
   @override
   Future<List<MovieModel>> getAllMovies() async {
     try {
-      final response =
-          await dioClient.get('movies'); // Solicita todas las películas
-      // Mapea la respuesta JSON a una lista de objetos MovieModel
-      return (response.data as List)
-          .map((movie) => MovieModel.fromJson(movie))
-          .toList();
+      final response = await dioClient.get('movies');
+      return _parseMovieList(response);
     } on DioException catch (e) {
-      // Maneja y lanza un error basado en el tipo de error de Dio
       throw _handleDioError(e);
+    } catch (e) {
+      throw Exception(ErrorMessages.unexpectedError);
     }
   }
 
   @override
   Future<MovieModel> getMovieById(int id) async {
     try {
-      final response =
-          await dioClient.get('movies/$id'); // Solicita una película por ID
-      return MovieModel.fromJson(
-          response.data); // Convierte la respuesta JSON a un objeto MovieModel
+      final response = await dioClient.get('movies/$id');
+      return MovieModel.fromJson(response.data);
     } on DioException catch (e) {
       throw _handleDioError(e);
+    } catch (e) {
+      throw Exception(ErrorMessages.unexpectedError);
+    }
+  }
+
+  @override
+  Future<List<MovieModel>> getMoviesWithLimit(int limit) async {
+    try {
+      final response =
+          await dioClient.get('movies', queryParameters: {'limit': limit});
+      return _parseMovieList(response);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    } catch (e) {
+      throw Exception(ErrorMessages.unexpectedError);
     }
   }
 
   @override
   Future<List<MovieModel>> searchMovies(String query) async {
     try {
-      final response = await dioClient
-          .get('movies', queryParameters: {'search': query}); // Busca películas
-      return (response.data as List)
-          .map((movie) => MovieModel.fromJson(movie))
-          .toList();
+      final response =
+          await dioClient.get('movies', queryParameters: {'search': query});
+      return _parseMovieList(response);
     } on DioException catch (e) {
       throw _handleDioError(e);
+    } catch (e) {
+      throw Exception(ErrorMessages.unexpectedError);
     }
   }
 
-  /// Método privado para manejar errores de Dio y devolver mensajes de error específicos.
-  String _handleDioError(DioException e) {
+  @override
+  Future<List<MovieModel>> sortMoviesByName({String order = 'asc'}) async {
+    try {
+      final response = await dioClient
+          .get('movies', queryParameters: {'sort': 'name', 'order': order});
+      return _parseMovieList(response);
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    } catch (e) {
+      throw Exception(ErrorMessages.unexpectedError);
+    }
+  }
+
+  List<MovieModel> _parseMovieList(Response response) {
+    return (response.data as List)
+        .map((movie) => MovieModel.fromJson(movie))
+        .toList();
+  }
+
+  Exception _handleDioError(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
-        return ErrorMessages.timeoutError; // Error de tiempo de espera
+        return Exception(ErrorMessages.timeoutError);
       case DioExceptionType.badResponse:
         if (e.response?.statusCode == 404) {
-          return ErrorMessages.notFound; // Error 404: no encontrado
+          return Exception(ErrorMessages.notFound);
         } else if (e.response?.statusCode == 500) {
-          return ErrorMessages.serverError; // Error 500: servidor
+          return Exception(ErrorMessages.serverError);
         } else {
-          return ErrorMessages.unexpectedError; // Error inesperado
+          return Exception(ErrorMessages.unexpectedError);
         }
       case DioExceptionType.cancel:
-        return ErrorMessages.unexpectedError; // Error por cancelación
+        return Exception(ErrorMessages.unexpectedError);
       case DioExceptionType.unknown:
-        return ErrorMessages.networkError; // Error de red
+        return Exception(ErrorMessages.networkError);
       default:
-        return ErrorMessages.unexpectedError; // Error por defecto
+        return Exception(ErrorMessages.unexpectedError);
     }
   }
 }
