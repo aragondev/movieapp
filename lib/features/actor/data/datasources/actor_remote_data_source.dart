@@ -1,57 +1,35 @@
-import 'package:dio/dio.dart';
+import 'package:movie_app/core/network/dio_client.dart';
 import 'package:movie_app/features/actor/data/models/actor_model.dart';
 
 abstract class ActorRemoteDataSource {
   Future<List<ActorModel>> getAllActors();
-  Future<ActorModel> getActorById(int id);
-  Future<List<ActorModel>> searchActors(String query);
-  Future<List<ActorModel>> getActorsWithLimit(int limit);
-  Future<List<ActorModel>> sortActors(String sortBy, String order);
+  Future<ActorModel> getActorByName(String name);
 }
 
 class ActorRemoteDataSourceImpl implements ActorRemoteDataSource {
-  final Dio dio;
+  final DioClient dioClient;
 
-  ActorRemoteDataSourceImpl({required this.dio});
+  ActorRemoteDataSourceImpl({required this.dioClient});
 
   @override
   Future<List<ActorModel>> getAllActors() async {
-    final response = await dio.get('https://freetestapi.com/api/v1/actors');
+    final response = await dioClient.get('actors');
     return (response.data as List)
         .map((actor) => ActorModel.fromJson(actor))
         .toList();
   }
 
   @override
-  Future<ActorModel> getActorById(int id) async {
-    final response = await dio.get('https://freetestapi.com/api/v1/actors/$id');
-    return ActorModel.fromJson(response.data);
-  }
-
-  @override
-  Future<List<ActorModel>> searchActors(String query) async {
+  Future<ActorModel> getActorByName(String name) async {
     final response =
-        await dio.get('https://freetestapi.com/api/v1/actors?search=$query');
-    return (response.data as List)
-        .map((actor) => ActorModel.fromJson(actor))
-        .toList();
-  }
+        await dioClient.get('actors', queryParameters: {'search': name});
+    final List<dynamic> data = response.data;
 
-  @override
-  Future<List<ActorModel>> getActorsWithLimit(int limit) async {
-    final response =
-        await dio.get('https://freetestapi.com/api/v1/actors?limit=$limit');
-    return (response.data as List)
-        .map((actor) => ActorModel.fromJson(actor))
-        .toList();
-  }
-
-  @override
-  Future<List<ActorModel>> sortActors(String sortBy, String order) async {
-    final response = await dio
-        .get('https://freetestapi.com/api/v1/actors?sort=$sortBy&order=$order');
-    return (response.data as List)
-        .map((actor) => ActorModel.fromJson(actor))
-        .toList();
+    if (data.isNotEmpty) {
+      return ActorModel.fromJson(
+          data[0]); // Tomar el primer elemento de la lista
+    } else {
+      throw Exception('Actor not found');
+    }
   }
 }

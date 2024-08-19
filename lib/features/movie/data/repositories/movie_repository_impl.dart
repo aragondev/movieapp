@@ -9,24 +9,11 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<List<Movie>> getAllMovies() async {
-    return await remoteDataSource.getAllMovies();
+    return await remoteDataSource.getMovies();
   }
 
   @override
   Future<Movie> getMovieById(int id) async {
     return await remoteDataSource.getMovieById(id);
-  }
-
-  Future<List<Movie>> getMoviesWithLimit(int limit) async {
-    return await remoteDataSource.getMoviesWithLimit(limit);
-  }
-
-  @override
-  Future<List<Movie>> searchMovies(String query) async {
-    return await remoteDataSource.searchMovies(query);
-  }
-
-  Future<List<Movie>> sortMoviesByName({String order = 'asc'}) async {
-    return await remoteDataSource.sortMoviesByName(order: order);
   }
 }

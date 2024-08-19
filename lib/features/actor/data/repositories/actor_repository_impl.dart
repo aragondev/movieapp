@@ -9,26 +9,11 @@ class ActorRepositoryImpl implements ActorRepository {
 
   @override
   Future<List<Actor>> getAllActors() async {
-    return remoteDataSource.getAllActors();
+    return await remoteDataSource.getAllActors();
   }
 
   @override
-  Future<Actor> getActorById(int id) async {
-    return remoteDataSource.getActorById(id);
-  }
-
-  @override
-  Future<List<Actor>> searchActors(String query) async {
-    return remoteDataSource.searchActors(query);
-  }
-
-  @override
-  Future<List<Actor>> getActorsWithLimit(int limit) async {
-    return remoteDataSource.getActorsWithLimit(limit);
-  }
-
-  @override
-  Future<List<Actor>> sortActors(String sortBy, String order) async {
-    return remoteDataSource.sortActors(sortBy, order);
+  Future<Actor> getActorByName(String name) async {
+    return await remoteDataSource.getActorByName(name);
   }
 }

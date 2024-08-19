@@ -15,17 +15,15 @@ class MyApp extends StatelessWidget {
       title: 'Movie App',
       theme: ThemeData(
         primaryColor: Colors.redAccent,
-        hintColor: Colors.yellow,
-        scaffoldBackgroundColor:
-            Colors.grey[900], // Fondo general oscuro pero diferente al card
+        hintColor: Colors.deepPurple,
         appBarTheme: const AppBarTheme(
-          color: Colors.redAccent,
+          color: Colors.deepPurple,
           foregroundColor: Colors.white,
           titleTextStyle: TextStyle(
             fontFamily: 'Cinzel',
             fontSize: 28,
             fontWeight: FontWeight.bold,
-            color: Colors.yellowAccent,
+            color: Colors.white,
           ),
         ),
         textTheme: const TextTheme(

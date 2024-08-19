@@ -1,12 +1,12 @@
 import 'package:movie_app/features/actor/domain/entities/actor.dart';
 import 'package:movie_app/features/actor/domain/repositores/actor_repository.dart';
 
-class GetAllActors {
+class GetActorByName {
   final ActorRepository repository;
 
-  GetAllActors(this.repository);
+  GetActorByName({required this.repository});
 
-  Future<List<Actor>> call() async {
-    return await repository.getAllActors();
+  Future<Actor> call(String name) async {
+    return await repository.getActorByName(name);
   }
 }

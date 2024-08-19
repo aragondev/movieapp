@@ -48,7 +48,8 @@ class MovieCardClassic extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Colors.purple, // Color pastel suave para el texto
+                  color: Color.fromARGB(
+                      255, 64, 24, 85), // Color pastel suave para el texto
                 ),
               ),
               const SizedBox(height: 8.0),
@@ -115,7 +116,7 @@ class MovieCardGrid extends StatelessWidget {
         margin: const EdgeInsets.all(
             8.0), // Margen para separar las tarjetas en el grid
         decoration: BoxDecoration(
-          color: Colors.pink[50], // Fondo pastel suave
+          color: const Color.fromARGB(255, 235, 194, 241), // Fondo pastel suave
           borderRadius: BorderRadius.circular(15.0),
           boxShadow: [
             BoxShadow(
@@ -164,10 +165,10 @@ class MovieCardGrid extends StatelessWidget {
                   ),
                   Text(
                     'Rating: ${movie.rating}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
-                      color: Colors
-                          .purple[300], // Color pastel suave para el texto
+                      color: Color.fromARGB(255, 214, 153,
+                          225), // Color pastel suave para el texto
                     ),
                   ),
                 ],

@@ -1,13 +1,12 @@
 import 'package:movie_app/features/movie/domain/entities/movie.dart';
 import 'package:movie_app/features/movie/domain/repositories/movie_repository.dart';
 
-/// Caso de uso para obtener todas las películas.
-class GetMovies {
+class GetMovieById {
   final MovieRepository repository;
 
-  GetMovies({required this.repository});
+  GetMovieById({required this.repository});
 
-  Future<List<Movie>> call() async {
-    return await repository.getAllMovies();
+  Future<Movie> call(int id) async {
+    return await repository.getMovieById(id);
   }
 }
