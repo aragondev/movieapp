@@ -1,6 +1,6 @@
 # movie_app
 
-A new Flutter project.
+Movie basic with clean architecture
 
 ## Getting Started
 
